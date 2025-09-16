@@ -13,6 +13,7 @@ import {
   User,
   Building,
   Users,
+  Shield,
 } from 'lucide-react';
 import CreatePostButton from './components/CreatePostButton';
 import CreatePostModal from './components/CreatePostModal';
@@ -21,6 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { AuroraText } from '@/components/magicui/aurora-text';
 import { toast } from 'sonner';
+import StudentIdVerification from '@/components/StudentIdVerification';
 
 interface ApiResponse {
   msg: string;
@@ -35,6 +37,7 @@ export default function Feed() {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isVerificationOpen, setIsVerificationOpen] = useState(false);
 
   // Infinite scroll state
   const [page, setPage] = useState(1);
@@ -148,11 +151,20 @@ export default function Feed() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         {/* Page heading */}
         <header className="mb-4 sm:mb-6">
-          <h1 className="text-center">
+          <div className="flex items-center justify-between">
+            <h1 className="flex-1 text-center">
             <AuroraText className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight">
               Discover
             </AuroraText>
-          </h1>
+            </h1>
+            <Button
+              onClick={() => setIsVerificationOpen(true)}
+              className="ml-4 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg flex items-center gap-2"
+            >
+              <Shield size={16} />
+              <span className="hidden sm:inline">Verify ID</span>
+            </Button>
+          </div>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
@@ -464,6 +476,10 @@ export default function Feed() {
         isOpen={isPostModalOpen}
         onClose={() => setIsPostModalOpen(false)}
       />
-    </div>
+      
+      <StudentIdVerification
+        isOpen={isVerificationOpen}
+        onClose={() => setIsVerificationOpen(false)}
+      />    </div>
   );
 }
