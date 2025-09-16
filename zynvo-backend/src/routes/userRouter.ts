@@ -12,6 +12,9 @@ import { AuthMiddleware } from '../middleware/AuthMiddleware';
 dotenv.config();
 const router = Router();
 
+
+const FF_URL = process.env.FRONTEND_URL || "http://localhost:3000"
+
 const genToken = () => {
   return crypto.randomBytes(20).toString('hex');
 };
@@ -94,7 +97,7 @@ router.post('/signup', async (req: Request, res: Response) => {
         },
       });
 
-      const url = `https://bookstore-presented-guided-susan.trycloudflare.com/verification-mail?token=${vToken}&email=${parsedData.data.email}`;
+      const url = `${FF_URL}/verification-mail?token=${vToken}&email=${parsedData.data.email}`;
       await mail(
         parsedData.data.name,
         parsedData.data.email,
@@ -192,7 +195,7 @@ router.post('/ResendEmail', async (req: Request, res: Response) => {
         }
       })
       if(update) {
-         const url = `https://bookstore-presented-guided-susan.trycloudflare.com/verification-mail?token=${vToken}&email=${email}`;
+         const url = `${FF_URL}/verification-mail?token=${vToken}&email=${email}`;
               await mail(
                 exists.name,
                 email,
